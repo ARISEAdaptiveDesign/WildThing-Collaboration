@@ -1,6 +1,9 @@
 # Arise_WildThing
 Controls for Wild Thing Conversion
 
+2022-07-17 v4.2 (VNH5019)
+General statement: Updated documentation
+*moved pulldown resistor from pin 12 to pin 13
 
 2022-07-15 v4.2 (VNH5019) from v4.1
 General statement: Needed to remove "bang" when motors change direction, so Added Zero Crossing handling

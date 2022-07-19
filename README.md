@@ -5,7 +5,11 @@ Controls for Wild Thing Conversion
 General statement: Updated documentation
 *moved pulldown resistor from pin 12 to pin 13
 
-2022-07-15 v4.2 (VNH5019) from v4.1
+2022-07-17 v4.2 (VNH5019)
+General statement: Updated documentation
+*moved pulldown resistor from pin 12 to pin 13
+
+* Added calibration2022-07-15 v4.2 (VNH5019) from v4.1
 General statement: Needed to remove "bang" when motors change direction, so Added Zero Crossing handling
 Details
 * Added calibration "zeroCrossingDwell" to tune how long to keep motor off before changing direction

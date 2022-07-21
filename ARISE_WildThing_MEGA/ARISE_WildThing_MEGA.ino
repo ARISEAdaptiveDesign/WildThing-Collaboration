@@ -292,7 +292,7 @@ void loop()
       break;
       case 3:
         if (motorLVel_Final==0){
-          BrakeL = min(BrakeL+BrakeRamp),400); //increment brake at defined rate to avoid skids ;), Limit at 400
+          BrakeL = min(BrakeL+BrakeRamp,400); //increment brake at defined rate to avoid skids ;), Limit at 400
           md.setM1Brake(BrakeL); // set brake pwm
         } else {
           BrakeL = 0; //reset brake level if driving motor
@@ -300,7 +300,7 @@ void loop()
           md.setM1Speed(motorLSpeed);
         }
         if (motorRVel_Final==0){
-          BrakeR = min(BrakeR+BrakeRamp),400); //increment brake at defined rate to avoid skids ;), limit at 400
+          BrakeR = min(BrakeR+BrakeRamp,400); //increment brake at defined rate to avoid skids ;), limit at 400
           md.setM2Brake(BrakeR); // set brake pwm
         } else {
           BrakeR = 0; //reset brake level if driving motor

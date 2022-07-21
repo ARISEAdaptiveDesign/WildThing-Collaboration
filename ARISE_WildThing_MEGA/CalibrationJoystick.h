@@ -50,8 +50,8 @@ const float motorDropout = 0.08; // motor dropout ( % of motorMaxSpeed ) Set thi
   bool motorRForward = true;
   float motorRVel_next = 0;
   int zeroCrossingCountR = 0; //counter how long we are at zero
-  int M1Brake = 0 ; // LEFT motor Value to brake for vnh5019, braking is value 0 min and 400 max
-  int M2Brake = 0 ; // RIGHT motor Value to brake for vnh5019, braking is value 0 min and 400 max
+  int BrakeL = 0 ; // LEFT motor Value to brake for vnh5019, braking is value 0 min and 400 max
+  int BrakeR = 0 ; // RIGHT motor Value to brake for vnh5019, braking is value 0 min and 400 max
 
 // keeps track of whether we need to set up the joystick or tether in the loop
   bool usingTether = false;

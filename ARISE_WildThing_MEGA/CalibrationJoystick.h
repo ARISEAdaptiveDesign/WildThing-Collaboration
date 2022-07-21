@@ -5,16 +5,16 @@
 #define CalibrationJoystick_H
 
 // Occupant Joystick
-float joyOffsetAngle_Occupant = -90; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <OCCUPANT>
-bool flipSpin_Occupant = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <OCCUPANT>
-int numSamples_Occupant = 30; // number of samples to check in a "window"
-int numWindows_Occupant = 30; // maximum attempts to check joystick
+const float joyOffsetAngle_Occupant = -90; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <OCCUPANT>
+const bool flipSpin_Occupant = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <OCCUPANT>
+const int numSamples_Occupant = 30; // number of samples to check in a "window"
+const int numWindows_Occupant = 30; // maximum attempts to check joystick
 
 // Tethered Joystick
-float joyOffsetAngle_Tether = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <TETHER>
-bool flipSpin_Tether = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <TETHER>
-int numSamples_Tether = 30; // number of samples to check in a "window"
-int numWindows_Tether = 30; // maximum attempts to check joystick
+const float joyOffsetAngle_Tether = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <TETHER>
+const bool flipSpin_Tether = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <TETHER>
+const int numSamples_Tether = 30; // number of samples to check in a "window"
+const int numWindows_Tether = 30; // maximum attempts to check joystick
 
 const float motorDropout = 0.08; // motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
 
@@ -41,6 +41,7 @@ const float motorDropout = 0.08; // motor dropout ( % of motorMaxSpeed ) Set thi
   const float maxAccel = 0.05 ; // range: 0.01 to 1 max acceleration of motor per timestep
   const float maxDecel = 0.12 ; // range: 0.01 to 1 max deceleration of motor per timestep
   const float zeroCrossingDwell = 3 ; // number of timesteps (aka loops) to keep motor off between changes in direction (note not "ms", just counting loops)
+  const int BrakeRamp = 100 ; // per loop ramp rate to turn on braking for vnh5019. max braking is 400
 
 // zero crossing variables
   bool motorLForward = true;
@@ -48,7 +49,9 @@ const float motorDropout = 0.08; // motor dropout ( % of motorMaxSpeed ) Set thi
   int zeroCrossingCountL = 0;
   bool motorRForward = true;
   float motorRVel_next = 0;
-  int zeroCrossingCountR = 0;
+  int zeroCrossingCountR = 0; //counter how long we are at zero
+  int M1Brake = 0 ; // LEFT motor Value to brake for vnh5019, braking is value 0 min and 400 max
+  int M2Brake = 0 ; // RIGHT motor Value to brake for vnh5019, braking is value 0 min and 400 max
 
 // keeps track of whether we need to set up the joystick or tether in the loop
   bool usingTether = false;

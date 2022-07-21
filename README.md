@@ -1,6 +1,15 @@
 # Arise_WildThing
 Controls for Wild Thing Conversion
 
+2022-07-21 v4.3 from v4.2
+General statement: Configured motor braking for VNH5019
+*ARISE_WildThing_MEGA.in0
+  - Added handling for motor braking in lines 294 to 309 for both left and right motors of course
+  - braking is ramped up at a rate defined by tunable parameter "BrakeRamp"
+*CalibrationJoystick.h
+  - Added variables BrakeL and BrakeR to keep track of how much to brake
+  - Added "BrakeRamp" to control how fast to turn brakes on.
+
 2022-07-17 v4.2 (VNH5019)
 General statement: Updated documentation
 *moved pulldown resistor from pin 12 to pin 13

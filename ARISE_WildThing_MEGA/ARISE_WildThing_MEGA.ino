@@ -146,7 +146,7 @@ void loop()
     }
 
     // figure out Lmix from angle
-    for (int i = 0; i < 13; i+=1) {
+    for (int i = 0; i < 14; i+=1) {
       x1 = mixTableL[i][0];
       y1 = mixTableL[i][1];
       x2 = mixTableL[i+1][0];
@@ -154,18 +154,20 @@ void loop()
 
       if ( joyAngle<=x2 ) {
         if (x2==x1) {Lmix = y1;} else {  Lmix = y1 + (joyAngle - x1) * (y2 - y1) / (x2 - x1);}
+        //Serial.print("LIndex= "); Serial.print(i); Serial.print("  ");
         break;
       }
     }
 
     // figure out Rmix from angle
-    for (int i = 0; i < 13; i+=1) {
+    for (int i = 0; i < 14; i+=1) {
       x1 = mixTableR[i][0];
       y1 = mixTableR[i][1];
       x2 = mixTableR[i+1][0];
       y2 = mixTableR[i+1][1];
       if ( joyAngle<=x2 ) {
         if (x2==x1) {Rmix = y1;} else {  Rmix = y1 + (joyAngle - x1) * (y2 - y1) / (x2 - x1);}
+        //Serial.print("RIndex= "); Serial.print(i); Serial.print("  "); 
         break;
       }
     }

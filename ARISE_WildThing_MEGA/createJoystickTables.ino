@@ -8,44 +8,58 @@ void createJoystickTables() {
 // Angle Lookup Table (Mix)
 
   // Generate LookupTables for L Mix
-  float mixTableLTemp[14][2] = 
+  float mixTableLTemp[15][2] = 
     {
       { 0                , motorForward_PowerLevels },
-      { straightDwell , motorForward_PowerLevels },
+      { TrimAngle , motorForward_PowerLevels + TrimPlus },
       { 90 - spinZone , motorTurnFor_PowerLevels    },
       { 90 - spinDwell, motorSpin_PowerLevels    },
       { 90 + spinDwell, motorSpin_PowerLevels    },
       { 90 + spinZone , 0 },
-      { 180 -straightDwell, - motorReverse_PowerLevels },
-      { 180 +straightDwell, - motorReverse_PowerLevels },
+      { 180 - TrimAngle, - motorReverse_PowerLevels + TrimMinus },
+      { 180 , - motorReverse_PowerLevels },
+      { 180 + TrimAngle, - motorReverse_PowerLevels - TrimPlus },
       { 270 - spinZone, - motorTurnRev_PowerLevels },
-      { 270 -spinDwell, - motorSpin_PowerLevels },
-      { 270 +spinDwell, - motorSpin_PowerLevels },
+      { 270 - spinDwell, - motorSpin_PowerLevels },
+      { 270 + spinDwell, - motorSpin_PowerLevels },
       { 270 + spinZone, 0 },
-      { 360 -straightDwell, motorForward_PowerLevels   },
+      { 360 - TrimAngle, motorForward_PowerLevels - TrimMinus  },
       { 360              , motorForward_PowerLevels }
   };
   memcpy(mixTableL, mixTableLTemp, sizeof(mixTableLTemp));
-
+  Serial.print("mixTableL= ");   Serial.println("");
+    for(int i = 0; i < 15; i++)
+    {
+      Serial.print(i); Serial.print("  "); Serial.print(mixTableL[i][0]); Serial.print("  "); Serial.print(mixTableL[i][1]); Serial.println("");
+    }
+  Serial.println("");
+    
   // Generate LookupTables for R Mix  
-  float mixTableRTemp[14][2] = {
+  float mixTableRTemp[15][2] = {
       { 0                , motorForward_PowerLevels },
-      { straightDwell , motorForward_PowerLevels },
+      { TrimAngle , motorForward_PowerLevels - TrimMinus},
       { 90 - spinZone , 0    },
       { 90 - spinDwell, - motorSpin_PowerLevels    },
       { 90 + spinDwell, - motorSpin_PowerLevels    },
       { 90 + spinZone , - motorTurnRev_PowerLevels },
-      { 180 -straightDwell, - motorReverse_PowerLevels },
-      { 180 +straightDwell, - motorReverse_PowerLevels },
+      { 180 - TrimAngle, - motorReverse_PowerLevels - TrimPlus},
+      { 180 , - motorReverse_PowerLevels },
+      { 180 + TrimAngle, - motorReverse_PowerLevels + TrimMinus },
       { 270 - spinZone, 0 },
-      { 270 -spinDwell, motorSpin_PowerLevels },
-      { 270 +spinDwell, motorSpin_PowerLevels },
+      { 270 - spinDwell, motorSpin_PowerLevels },
+      { 270 + spinDwell, motorSpin_PowerLevels },
       { 270 + spinZone, motorTurnFor_PowerLevels },
-      { 360 -straightDwell, motorForward_PowerLevels   },
+      { 360 - TrimAngle, motorForward_PowerLevels + TrimPlus },
       { 360              , motorForward_PowerLevels }
     
   };
   memcpy(mixTableR, mixTableRTemp, sizeof(mixTableRTemp));
+  Serial.print("mixTableR= ");   Serial.println("");
+    for(int i = 0; i < 15; i++)
+    {
+      Serial.print(i); Serial.print("  "); Serial.print(mixTableR[i][0]); Serial.print("  "); Serial.print(mixTableR[i][1]); Serial.println("");
+    }
+  Serial.println("");
 
 // Radius Lookup Table (Scale)
 

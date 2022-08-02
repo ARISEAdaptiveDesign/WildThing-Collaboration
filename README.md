@@ -1,6 +1,16 @@
 # Arise_WildThing
 Controls for Wild Thing Conversion
 
+2022-08-01 
+General statement: continued changes to refine feel at "near straight for/rev"
+Changed Mix Tables to 15x2 array (was 14x2 array)
+Changed "StraightDwell" to "TrimAngle" - so instead of having "dwell" area close to zero, 
+it now has "Trim" zone where subtle left/right will adjust faster/slower on outer/inner wheels
+tuning can be made by new calibration TrimPlus and TrimMinus
+
+2022-07-24
+General statement: Mix Tuning/Redo
+
 2022-07-21 v4.3 from v4.2
 General statement: Configured motor braking for VNH5019
 *ARISE_WildThing_MEGA.in0

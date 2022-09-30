@@ -22,7 +22,7 @@ const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set thi
   // Angles
   const float spinZone      = 15; // number of degrees above or below East or West that one motor turning and other is stopped
   const float TrimAngle = 10; // degrees travel on either side of forward/backward that is treated as true forward/backward
-  const float spinDwell     = 0; // degrees travel on either side of left/right that is treated as true spin
+  const float spinDwell     = 3; // degrees travel on either side of left/right that is treated as true spin
   // Speeds
   const float motorForward_PowerLevels = 1.0 ; // range: 0.01 to 1 max FORWARD Speed  (% output for Motor pwm)
   const float motorReverse_PowerLevels = 0.75 ; // range: 0.01 to 1 max REVERSE Speed (% output for Motor pwm)
@@ -30,7 +30,7 @@ const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set thi
   const float motorTurnRev_PowerLevels = 0.70 ; // range: 0.01 to 1 motor speeds used for REVERSE Turn movement (aka one wheel spins at this speed while other is stopped)  (% output for Motor pwm)
   const float motorSpin_PowerLevels = 0.65 ; // range: 0.01 to 1 motor speeds used for Spin movement (aka each motor spins at this speed in opposite directions)  (% output for Motor pwm)
   const float TrimPlus = 0.05 ; // range: 0.00 to 0.2 Added Speed for Outside Wheel within TrimAngle (% output for Motor pwm)
-  const float TrimMinus = 0.05 ; // range: 0.00 to 0.2 Minus Speed for Inside Wheel within TrimAngle (% output for Motor pwm)
+  const float TrimMinus = 0.1 ; // range: 0.00 to 0.2 Minus Speed for Inside Wheel within TrimAngle (% output for Motor pwm)
 
 
 // Radius Lookup Table (Scale)
@@ -43,7 +43,8 @@ const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set thi
   const float maxAccel = 0.05 ; // range: 0.01 to 1 max acceleration of motor per timestep
   const float maxDecel = 0.08 ; // range: 0.01 to 1 max deceleration of motor per timestep
   const float zeroCrossingDwell = 10 ; // number of timesteps (aka loops) to keep motor off between changes in direction (note not "ms", just counting loops)
-  const int BrakeRamp = 10 ; // per loop ramp rate to turn on braking for vnh5019. max braking is 400
+  const int BrakeRamp = 10 ; // per loop ramp rate to turn on braking for vnh5019.
+  const int maxBrake = 400 ; // per loop ramp rate to turn on braking for vnh5019. max braking is 400
 
 // zero crossing variables
   bool motorLForward = true;

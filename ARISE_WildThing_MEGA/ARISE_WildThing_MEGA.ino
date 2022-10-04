@@ -42,7 +42,6 @@ void setup()
         // << SET MOTORS OFF >>
         ///////////////////////////////////////////////////////////////////////////////////////////////////
           delay(50); // wait a little before turning on Motor Controllers
-o
           pinMode(PowerLevelSupply, OUTPUT); // define digital pin as output
           digitalWrite(PowerLevelSupply, HIGH); // sets digital pin to HIGH to function as 5V
           pinMode(powerSpark1, OUTPUT); // define digital pin as output

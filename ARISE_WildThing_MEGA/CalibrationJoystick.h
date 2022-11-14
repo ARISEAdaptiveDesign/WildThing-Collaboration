@@ -5,13 +5,13 @@
 #define CalibrationJoystick_H
 
 // Occupant Joystick
-const float joyOffsetAngle_Occupant = 180; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <OCCUPANT>
+const float joyOffsetAngle_Occupant = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <OCCUPANT>
 const bool flipSpin_Occupant = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <OCCUPANT>
 const int numSamples_Occupant = 30; // number of samples to check in a "window"
 const int numWindows_Occupant = 30; // maximum attempts to check joystick
 
 // Tethered Joystick
-const float joyOffsetAngle_Tether = 180; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <TETHER>
+const float joyOffsetAngle_Tether = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <TETHER>
 const bool flipSpin_Tether = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <TETHER>
 const int numSamples_Tether = 30; // number of samples to check in a "window"
 const int numWindows_Tether = 30; // maximum attempts to check joystick

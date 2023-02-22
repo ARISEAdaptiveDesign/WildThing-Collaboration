@@ -74,8 +74,8 @@
     //int powerLevel = 1; // Default power level set by the measured switch value or BT. Determines how fast the motors can move; 0 is slowest, 1 is medium (default), 2 is fastest
 
   // Mix Lookup Tables (converting joystick angle to Left & Right Mix) (3 power settings x 7 points)
-    float mixTableL[14][2]; // Lookuptable to convert joystick angle to Left motor Mix
-    float mixTableR[14][2]; // Lookuptable to convert joystick angle to Right motor Mix
+    float mixTableL[15][2]; // Lookuptable to convert joystick angle to Left motor Mix
+    float mixTableR[15][2]; // Lookuptable to convert joystick angle to Right motor Mix
     float radTable[6][2];  // Lookuptable to convert joystick radius to motor speed scale
 
     float scale;

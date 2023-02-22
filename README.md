@@ -1,15 +1,30 @@
 # Arise_WildThing
 Controls for Wild Thing Conversion
 
-2022-07-17 v4.2 (VNH5019)
-General statement: Updated documentation
-*moved pulldown resistor from pin 12 to pin 13
+2022-08-01 
+General statement: continued changes to refine feel at "near straight for/rev"
+Changed Mix Tables to 15x2 array (was 14x2 array)
+Changed "StraightDwell" to "TrimAngle" - so instead of having "dwell" area close to zero, 
+it now has "Trim" zone where subtle left/right will adjust faster/slower on outer/inner wheels
+tuning can be made by new calibration TrimPlus and TrimMinus
+
+2022-07-24
+General statement: Mix Tuning/Redo
+
+2022-07-21 v4.3 from v4.2
+General statement: Configured motor braking for VNH5019
+*ARISE_WildThing_MEGA.in0
+  - Added handling for motor braking in lines 294 to 309 for both left and right motors of course
+  - braking is ramped up at a rate defined by tunable parameter "BrakeRamp"
+*CalibrationJoystick.h
+  - Added variables BrakeL and BrakeR to keep track of how much to brake
+  - Added "BrakeRamp" to control how fast to turn brakes on.
 
 2022-07-17 v4.2 (VNH5019)
 General statement: Updated documentation
 *moved pulldown resistor from pin 12 to pin 13
 
-* Added calibration2022-07-15 v4.2 (VNH5019) from v4.1
+2022-07-15 v4.2 (VNH5019) from v4.1
 General statement: Needed to remove "bang" when motors change direction, so Added Zero Crossing handling
 Details
 * Added calibration "zeroCrossingDwell" to tune how long to keep motor off before changing direction

@@ -42,7 +42,6 @@ void setup()
         // << SET MOTORS OFF >>
         ///////////////////////////////////////////////////////////////////////////////////////////////////
           delay(50); // wait a little before turning on Motor Controllers
-
           pinMode(PowerLevelSupply, OUTPUT); // define digital pin as output
           digitalWrite(PowerLevelSupply, HIGH); // sets digital pin to HIGH to function as 5V
           pinMode(powerSpark1, OUTPUT); // define digital pin as output
@@ -146,7 +145,7 @@ void loop()
     }
 
     // figure out Lmix from angle
-    for (int i = 0; i < 13; i+=1) {
+    for (int i = 0; i < 14; i+=1) {
       x1 = mixTableL[i][0];
       y1 = mixTableL[i][1];
       x2 = mixTableL[i+1][0];
@@ -154,18 +153,20 @@ void loop()
 
       if ( joyAngle<=x2 ) {
         if (x2==x1) {Lmix = y1;} else {  Lmix = y1 + (joyAngle - x1) * (y2 - y1) / (x2 - x1);}
+        //Serial.print("LIndex= "); Serial.print(i); Serial.print("  ");
         break;
       }
     }
 
     // figure out Rmix from angle
-    for (int i = 0; i < 13; i+=1) {
+    for (int i = 0; i < 14; i+=1) {
       x1 = mixTableR[i][0];
       y1 = mixTableR[i][1];
       x2 = mixTableR[i+1][0];
       y2 = mixTableR[i+1][1];
       if ( joyAngle<=x2 ) {
         if (x2==x1) {Rmix = y1;} else {  Rmix = y1 + (joyAngle - x1) * (y2 - y1) / (x2 - x1);}
+        //Serial.print("RIndex= "); Serial.print(i); Serial.print("  "); 
         break;
       }
     }
@@ -207,7 +208,7 @@ void loop()
         motorLForward = true; // last direction is forward (motorLForward initialized as true)
         digitalWrite(dir1, HIGH);
         digitalWrite(dir1_opp, LOW);
-      }   
+      }
       if (motorLVel_Filt < 0) {
         motorLForward = false;  // last direction is reverse
         digitalWrite(dir1, LOW);
@@ -241,7 +242,7 @@ void loop()
         motorRForward = true; // last direction is forward (motorLForward initialized as true)
         digitalWrite(dir2, HIGH);
         digitalWrite(dir2_opp, LOW);
-      }   
+      }
       if (motorRVel_Filt < 0) {
         motorRForward = false;  // last direction is reverse
         digitalWrite(dir2, LOW);
@@ -291,10 +292,22 @@ void loop()
             analogWrite(pwm2, motorRSpeed );
       break;
       case 3:
-        motorLSpeed = rescale(motorLVel_Final, -1, 1, -400, 400);
-        motorRSpeed = rescale(motorRVel_Final, -1, 1, -400, 400);
-        md.setM1Speed(motorLSpeed);
-        md.setM2Speed(motorRSpeed);
+        if (motorLVel_Final==0){
+          BrakeL = min(BrakeL+BrakeRamp,maxBrake); //increment brake at defined rate to avoid skids ;), Limit at maxBrake
+          md.setM1Brake(BrakeL); // set brake pwm
+        } else {
+          BrakeL = 0; //reset brake level if driving motor
+          motorLSpeed = rescale(motorLVel_Final, -1, 1, -400, 400);
+          md.setM1Speed(motorLSpeed);
+        }
+        if (motorRVel_Final==0){
+          BrakeR = min(BrakeR+BrakeRamp,maxBrake); //increment brake at defined rate to avoid skids ;), limit at maxBrake
+          md.setM2Brake(BrakeR); // set brake pwm
+        } else {
+          BrakeR = 0; //reset brake level if driving motor
+          motorRSpeed = rescale(motorRVel_Final, -1, 1, -400, 400);
+          md.setM2Speed(motorRSpeed);
+        }
         //stopIfFault();
       break;
     }
@@ -330,7 +343,7 @@ void loop()
       Serial.print("Tether Y "); Serial.print("\t"); Serial.print(analogRead(joyY_Tether)); Serial.print("\t");
       //Serial.print("JoySwitch_Tether = "); Serial.print(digitalRead(JoySwitch_Tether)); Serial.print("\t");
       //Serial.print("JoySwitch_Onboard = "); Serial.print(digitalRead(JoySwitch_Onboard)); Serial.print("\t");
-      Serial.print("JoySwitch_Main = "); Serial.print(analogRead(JoySwitch_Main)); Serial.print("\t"); 
+      Serial.print("JoySwitch_Main = "); Serial.print(analogRead(JoySwitch_Main)); Serial.print("\t");
       Serial.print("PowerLevelPotInput = "); Serial.print(analogRead(PowerLevelPotInput)); Serial.print("\t");
       Serial.print("\n");
   }

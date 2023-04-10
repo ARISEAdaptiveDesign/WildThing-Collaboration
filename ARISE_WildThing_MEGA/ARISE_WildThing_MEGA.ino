@@ -24,6 +24,9 @@ void setup()
   ///////////////////////////////////////////////////////////////////////////////////////////////////
     Serial.begin(9600); // set communication between computer & Arduino; and Arduino to HC-50 Remote
 
+    Serial.print("Software Date 4/10/2023");
+    Serial.println("");
+
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   // << DEFINE OUTPUTS/INPUTS >>
   ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,6 +114,7 @@ void loop()
 
     } else {
       // Joystick wires seem OK, so go ahead...
+      // Joystick wires seem OK, so go ahead...      
       deltaX = joyPosX - xRest; // A2D cartesian position from "at Rest"
       deltaY = joyPosY - yRest; // A2D cartesian position from "at Rest"
 

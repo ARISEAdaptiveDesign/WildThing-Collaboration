@@ -16,7 +16,7 @@ const bool flipSpin_Tether = false; // use true or false to change SPIN directio
 const int numSamples_Tether = 30; // number of samples to check in a "window"
 const int numWindows_Tether = 30; // maximum attempts to check joystick
 
-const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
+const float motorDropout = 0.07; // motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
 
 
   // Angles
@@ -41,7 +41,7 @@ const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set thi
 
 // Acceleration & Deceleration Limits
   const float maxAccel = 0.05 ; // range: 0.01 to 1 max acceleration of motor per timestep
-  const float maxDecel = 0.08 ; // range: 0.01 to 1 max deceleration of motor per timestep
+  const float maxDecel = 0.10 ; // range: 0.01 to 1 max deceleration of motor per timestep
   const float zeroCrossingDwell = 10 ; // number of timesteps (aka loops) to keep motor off between changes in direction (note not "ms", just counting loops)
   const int BrakeRamp = 10 ; // per loop ramp rate to turn on braking for vnh5019.
   const int maxBrake = 400 ; // per loop ramp rate to turn on braking for vnh5019. max braking is 400

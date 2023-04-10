@@ -10,7 +10,6 @@
   // Joystick Inputs
     const int joyX_Occupant = A7; // Horizontal Joystick input <Occupant>
     const int joyY_Occupant = A8; // Vertical Joystick input <Occupant>
-    const int JoySwitch_Onboard = A9; // OFF disables Onboard Joystick
     const int joyX_Tether = A12; // Horizontal Joystick input <Tethered>
     const int joyY_Tether = A14; // Vertical Joystick input <Tethered>
     const int JoySwitch_Tether = A13;  // ON gives control temporarily back to Onboard (overrides JoySwitch_Main)

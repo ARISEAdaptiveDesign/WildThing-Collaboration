@@ -2,7 +2,8 @@
 /*
   ARISE - Syracuse, NY
   Main Contact: Connor McGough
-  Coders: Bill Smith 2021/11/10
+  Coders: Bill Smith 2023/04/10
+
 */
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +115,6 @@ void loop()
 
     } else {
       // Joystick wires seem OK, so go ahead...
-      // Joystick wires seem OK, so go ahead...      
       deltaX = joyPosX - xRest; // A2D cartesian position from "at Rest"
       deltaY = joyPosY - yRest; // A2D cartesian position from "at Rest"
 

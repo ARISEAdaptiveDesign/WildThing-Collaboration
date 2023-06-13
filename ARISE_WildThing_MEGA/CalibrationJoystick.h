@@ -9,12 +9,14 @@ const float joyOffsetAngle_Occupant = 0; // polar orientation of joystick (offse
 const bool flipSpin_Occupant = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <OCCUPANT>
 const int numSamples_Occupant = 30; // number of samples to check in a "window"
 const int numWindows_Occupant = 30; // maximum attempts to check joystick
+const float OccupantDownrate = 0.5; // downrate of occupant input for scaling speed (0 to 1)
 
 // Tethered Joystick
 const float joyOffsetAngle_Tether = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <TETHER>
 const bool flipSpin_Tether = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <TETHER>
 const int numSamples_Tether = 30; // number of samples to check in a "window"
 const int numWindows_Tether = 30; // maximum attempts to check joystick
+const float TetherDownrate = 1.0; // downrate of thether input for scaling speed (0 to 1)
 
 const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
 

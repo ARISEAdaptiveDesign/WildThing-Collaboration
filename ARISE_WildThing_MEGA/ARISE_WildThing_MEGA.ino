@@ -130,6 +130,7 @@ void loop()
       y2 = radTable[i+1][1];
       if ( joyRadius<=x2 ) {
         if (x2==x1) {scale = y1;} else {  scale = y1 + (joyRadius - x1) * (y2 - y1) / (x2 - x1);}
+        if (usingTether) {scale = scale*TetherDownrate;} else { scale = scale*OccupantDownrate;}
 /*
         Serial.print("i = "); Serial.print(i); Serial.print("\t");
         Serial.print("x1 = "); Serial.print(x1); Serial.print("\t");

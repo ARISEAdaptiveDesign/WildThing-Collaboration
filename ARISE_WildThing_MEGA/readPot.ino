@@ -16,7 +16,7 @@ void readPot() {
   // rescales the potentiometer output to get a speed multiplier
       //Serial.print("potValue = "); Serial.print(potValue); Serial.print("\t");
       //Serial.print("\n");
-  speedMultiplier = rescale(potValue, 540, 950, .35, .85);
+  speedMultiplier = rescale(potValue, potValueRescale[1], potValueRescale[2], potValueRescale[3], potValueRescale[4]);
       //Serial.print("speedMultiplier = "); Serial.print(speedMultiplier); Serial.print("\t");
       //Serial.print("\n");
   speedMultiplier = speedMultiplier * speedMultiplier;

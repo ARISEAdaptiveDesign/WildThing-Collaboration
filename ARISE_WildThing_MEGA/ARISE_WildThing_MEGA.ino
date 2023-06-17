@@ -11,9 +11,9 @@
 
   // #include "pinouts.h"; // use for SPARK, 298N, Amazon
   #include "pinouts_vnh5019.h"; // Use for VNH5019 MotorShield
-  #include "CalibrationsGlobal.h";
-  #include "CalibrationJoystick.h";
-  #include "DualVNH5019MotorShield.h"
+  #include "Config.h";
+  #include "Init.h";
+  #include "DualVNH5019MotorShield.h";
 
   DualVNH5019MotorShield md;
 

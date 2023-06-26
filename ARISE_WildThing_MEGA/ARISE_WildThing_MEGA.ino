@@ -11,9 +11,9 @@
 
   // #include "pinouts.h"; // use for SPARK, 298N, Amazon
   #include "pinouts_vnh5019.h"; // Use for VNH5019 MotorShield
-  #include "CalibrationsGlobal.h";
-  #include "CalibrationJoystick.h";
-  #include "DualVNH5019MotorShield.h"
+  #include "Config.h";
+  #include "Init.h";
+  #include "DualVNH5019MotorShield.h";
 
   DualVNH5019MotorShield md;
 
@@ -130,6 +130,7 @@ void loop()
       y2 = radTable[i+1][1];
       if ( joyRadius<=x2 ) {
         if (x2==x1) {scale = y1;} else {  scale = y1 + (joyRadius - x1) * (y2 - y1) / (x2 - x1);}
+        if (usingTether) {scale = scale*TetherDownrate;} else { scale = scale*OccupantDownrate;}
 /*
         Serial.print("i = "); Serial.print(i); Serial.print("\t");
         Serial.print("x1 = "); Serial.print(x1); Serial.print("\t");

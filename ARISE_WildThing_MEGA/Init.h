@@ -1,6 +1,6 @@
 
-#ifndef CalibrationsGlobal_H
-#define CalibrationsGlobal_H
+#ifndef Init_H
+#define Init_H
 
   // MOTOR DRIVERs
   // Spark = SPARK DC Brush Motor Driver
@@ -54,7 +54,6 @@
     int  motorRSpeed_Filt = 0;
     double speedMultiplier = 0;
 
-
   // Joystick Values - Start at 512 (middle position)
     int joyPosX = 512; // 0 to 1023 Range
     int joyPosY = 512; // 0 to 1023 Range
@@ -69,6 +68,19 @@
     bool joyInit = false; // Flag to indicate the joysick has been started at least once
     int joySelect = 0; // <1> Tethered (default) or <2> Occupant <0> Error
 
+  // zero crossing variables
+    bool motorLForward = true;
+    float motorLVel_next = 0;
+    int zeroCrossingCountL = 0;
+    bool motorRForward = true;
+    float motorRVel_next = 0;
+    int zeroCrossingCountR = 0; //counter how long we are at zero
+    int BrakeL = 0 ; // LEFT motor Value to brake for vnh5019, braking is value 0 min and 400 max
+    int BrakeR = 0 ; // RIGHT motor Value to brake for vnh5019, braking is value 0 min and 400 max
+
+  // keeps track of whether we need to set up the joystick or tether in the loop
+    bool usingTether = false;
+    
   // POWER SETTINGS //
     //int switchLevel; // Default power level set by the measured switch value. Determines how fast the motors can move; 0 is slowest, 1 is medium (default), 2 is fastest
     //int powerLevel = 1; // Default power level set by the measured switch value or BT. Determines how fast the motors can move; 0 is slowest, 1 is medium (default), 2 is fastest

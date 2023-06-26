@@ -1,23 +1,23 @@
-// JOYSTICK SETTINGS //
-// See also createJoystickTables
+// CONFIGURATION PARAMETERS //
 
-#ifndef CalibrationJoystick_H
-#define CalibrationJoystick_H
+#ifndef Config_H
+#define Config_H
 
 // Occupant Joystick
 const float joyOffsetAngle_Occupant = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <OCCUPANT>
 const bool flipSpin_Occupant = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <OCCUPANT>
 const int numSamples_Occupant = 30; // number of samples to check in a "window"
 const int numWindows_Occupant = 30; // maximum attempts to check joystick
+const float OccupantDownrate = 0.5; // downrate of occupant input for scaling speed (0 to 1)
 
 // Tethered Joystick
 const float joyOffsetAngle_Tether = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <TETHER>
 const bool flipSpin_Tether = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <TETHER>
 const int numSamples_Tether = 30; // number of samples to check in a "window"
 const int numWindows_Tether = 30; // maximum attempts to check joystick
+const float TetherDownrate = 1.0; // downrate of thether input for scaling speed (0 to 1)
 
-const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
-
+const float motorDropout = 0.01; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
 
   // Angles
   const float spinZone      = 15; // number of degrees above or below East or West that one motor turning and other is stopped
@@ -32,7 +32,6 @@ const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set thi
   const float TrimPlus = 0.05 ; // range: 0.00 to 0.2 Added Speed for Outside Wheel within TrimAngle (% output for Motor pwm)
   const float TrimMinus = 0.1 ; // range: 0.00 to 0.2 Minus Speed for Inside Wheel within TrimAngle (% output for Motor pwm)
 
-
 // Radius Lookup Table (Scale)
   const float Deadband   = .1 ; // 0 to .1 (%) suggested around rest position before moving (NOTE this will be used in + and - directions, so actual deadband is 2x)
   const float Endband    = .01 ; // 0 to .1 (%) suggested at end of range to ignore
@@ -46,16 +45,7 @@ const float motorDropout = 0.01; // motor dropout ( % of motorMaxSpeed ) Set thi
   const int BrakeRamp = 10 ; // per loop ramp rate to turn on braking for vnh5019.
   const int maxBrake = 400 ; // per loop ramp rate to turn on braking for vnh5019. max braking is 400
 
-// zero crossing variables
-  bool motorLForward = true;
-  float motorLVel_next = 0;
-  int zeroCrossingCountL = 0;
-  bool motorRForward = true;
-  float motorRVel_next = 0;
-  int zeroCrossingCountR = 0; //counter how long we are at zero
-  int BrakeL = 0 ; // LEFT motor Value to brake for vnh5019, braking is value 0 min and 400 max
-  int BrakeR = 0 ; // RIGHT motor Value to brake for vnh5019, braking is value 0 min and 400 max
+// rescales the potentiometer output to get a speed multiplier
+  float potValueRescale[4] = {540, 950, .35, .85};  //speedMultiplier = rescale(potValue, 540, 950, .35, .85);
 
-// keeps track of whether we need to set up the joystick or tether in the loop
-  bool usingTether = false;
 #endif

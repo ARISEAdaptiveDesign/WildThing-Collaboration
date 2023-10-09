@@ -1,4 +1,6 @@
 // CONFIGURATION PARAMETERS //
+// 511-MH-23-10-09 //
+// Updating motorDropout variable to address issues with motor humming at low speeds (potentiometer)
 
 #ifndef Config_H
 #define Config_H
@@ -17,7 +19,7 @@ const int numSamples_Tether = 30; // number of samples to check in a "window"
 const int numWindows_Tether = 30; // maximum attempts to check joystick
 const float TetherDownrate = 1.0; // downrate of thether input for scaling speed (0 to 1)
 
-const float motorDropout = 0.01; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
+const float motorDropout = 0.12; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
 
   // Angles
   const float spinZone      = 15; // number of degrees above or below East or West that one motor turning and other is stopped

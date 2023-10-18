@@ -54,6 +54,9 @@
     int  motorRSpeed_Filt = 0;
     double speedMultiplier = 0;
 
+    float motorMaxL = 1;
+    float motorMaxR = 1;
+
   // Joystick Values - Start at 512 (middle position)
     int joyPosX = 512; // 0 to 1023 Range
     int joyPosY = 512; // 0 to 1023 Range

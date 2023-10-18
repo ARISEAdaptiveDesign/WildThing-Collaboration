@@ -7,6 +7,7 @@ void debug(){
 //    Serial.print("joyPosX = "); Serial.print(joyPosX); Serial.print("\t");
 //    Serial.print("joyPosY = "); Serial.print(joyPosY); Serial.print("\t");
 
+
 //    Serial.print("joyAngle = "); Serial.print(joyAngle); Serial.print("\t");
 //    Serial.print("joyRadius = "); Serial.print(joyRadius); Serial.print("\t");
 //    Serial.print("scale = "); Serial.print(scale); Serial.print("\t");
@@ -21,8 +22,8 @@ void debug(){
 
 //    Serial.print("motorLVel = "); Serial.print(motorLVel); Serial.print("\t");
 //    Serial.print("motorRVel = "); Serial.print(motorRVel); Serial.print("\t");
-//    Serial.print("LV = "); Serial.print(motorLVel); Serial.print("\t");
-//    Serial.print("RV = "); Serial.print(motorRVel); Serial.print("\t");
+    Serial.print("LV = "); Serial.print(motorLVel); Serial.print("\t");
+    Serial.print("RV = "); Serial.print(motorRVel); Serial.print("\t");
 
 
 //    Serial.print("motorLVel_Filt = "); Serial.print(motorLVel_Filt); Serial.print("\t");

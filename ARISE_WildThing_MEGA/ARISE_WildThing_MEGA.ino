@@ -65,14 +65,7 @@ void setup()
           md.init();
       break;
       }
-      // PullUp all pot inputs HIGH (avoid float measurement in case of broken wire or disconnect - aka with pullup pins will read full A2D if broken wire)
-//        digitalWrite(joyX_Occupant, HIGH); // Horizontal Joystick input <Occupant>
-//        digitalWrite(joyY_Occupant, HIGH); // Vertical Joystick input <Occupant>
-//        digitalWrite(joyX_Tether, HIGH); // Horizontal Joystick input <Tethered>
-//        digitalWrite(joyY_Tether, HIGH); // Vertical Joystick input <Tethered>
-//        digitalWrite(PowerLevelPotInput, HIGH); // Input pin for potentiometer
         pinMode(JoySwitch_Main,INPUT);
-        //digitalWrite(JoySwitch_Main, HIGH); // +5v pin for main switch
 
       // LEDs
         pinMode(statusLED,OUTPUT);
@@ -85,9 +78,8 @@ void setup()
 
 void loop()
 {
-  selectJoystick(); // Check if we use occupant or tether joystick & Autocenter if it changes
+  selectJoystick(); // Check if we use occupant or tether joystick & Interrupt to Autocenter if it changes
 
-  // might need to move this somewhere else? not completely sure
   if (joyPassed == true) {
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   // << Calculate Joystick Polar Coordinates (Angle and Radius) from Cartesian Coordinates (X & Y) >>
@@ -131,17 +123,7 @@ void loop()
       if ( joyRadius<=x2 ) {
         if (x2==x1) {scale = y1;} else {  scale = y1 + (joyRadius - x1) * (y2 - y1) / (x2 - x1);}
         if (usingTether) {scale = scale*TetherDownrate;} else { scale = scale*OccupantDownrate;}
-/*
-        Serial.print("i = "); Serial.print(i); Serial.print("\t");
-        Serial.print("x1 = "); Serial.print(x1); Serial.print("\t");
-        Serial.print("x2 = "); Serial.print(x2); Serial.print("\t");
-        Serial.print("y1 = "); Serial.print(y1); Serial.print("\t");
-        Serial.print("y2 = "); Serial.print(y2); Serial.print("\t");
-        Serial.print("joyRadius = "); Serial.print(joyRadius); Serial.print("\t");
-        Serial.print("scale = "); Serial.print(scale); Serial.print("\t");
-        Serial.println("");
-*/
-        break;
+        break; // jump out of loop when find value in lookup table
       }
     }
 
@@ -154,8 +136,7 @@ void loop()
 
       if ( joyAngle<=x2 ) {
         if (x2==x1) {Lmix = y1;} else {  Lmix = y1 + (joyAngle - x1) * (y2 - y1) / (x2 - x1);}
-        //Serial.print("LIndex= "); Serial.print(i); Serial.print("  ");
-        break;
+        break; // jump out of loop when find value in lookup table
       }
     }
 
@@ -167,16 +148,14 @@ void loop()
       y2 = mixTableR[i+1][1];
       if ( joyAngle<=x2 ) {
         if (x2==x1) {Rmix = y1;} else {  Rmix = y1 + (joyAngle - x1) * (y2 - y1) / (x2 - x1);}
-        //Serial.print("RIndex= "); Serial.print(i); Serial.print("  "); 
-        break;
+        break; // jump out of loop when find value in lookup table
       }
     }
 
     // Read potentiometer output and get the speed multiplier from there
-
     readPot();
-    motorLVel = Lmix * scale * speedMultiplier;
-    motorRVel = Rmix * scale * speedMultiplier;
+    motorLVel = min( 1, max( Lmix * scale * speedMultiplier * (1 + trimFactor), -1)); // motorLVel = Lmix (from joystick angle) x scale (from joytsick radius) x speedMultiplier (from speedPot) & saturated -1 to 1
+    motorRVel = min( 1, max( Rmix * scale * speedMultiplier * (1 - trimFactor), -1)); // motorRVel = Rmix (from joystick angle) x scale (from joytsick radius) x speedMultiplier (from speedPot) & saturated -1 to 1
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // << FILTER MOTOR VELOCITY & SET DIRECTIONS >>
@@ -313,20 +292,6 @@ void loop()
       break;
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    // << Turns on LED's to indicate the battery level >>
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    //Get battery level
-    //int batteryLevel = readVcc();
-    //Todo: figure out best scaling for Battery, maybe 9V should be only 1 LED, and 13V is all 5 LEDs ?
-
-    //Lights up some of the LEDs based on how much battery there is
-    //if (batteryLevel > 0) { digitalWrite(ledPins[0], HIGH); } else { digitalWrite(ledPins[0], LOW); }
-    //if (batteryLevel > 4000) { digitalWrite(ledPins[1], HIGH); } else { digitalWrite(ledPins[1], LOW); }
-    //if (batteryLevel > 5000) { digitalWrite(ledPins[2], HIGH); } else { digitalWrite(ledPins[2], LOW); }
-    //if (batteryLevel > 5300) { digitalWrite(ledPins[3], HIGH); } else { digitalWrite(ledPins[3], LOW); }
-
     // Print info to Serial screen
     debug();
 
@@ -334,7 +299,10 @@ void loop()
   // << CONTROL LOOP SPEED with Delay >>
   ///////////////////////////////////////////////////////////////////////////////////////////////////
     delay(10); // wait x milliseconds before the next loop:
+
+  
   } else {
+    // If Joystick Fails, You end up here.
     Serial.print("Failed Joystick Checks. Stopping Run. "); Serial.print("\n");
     joySelect = 0; // <1> Tethered (default) or <2> Occupant <0> Error
     // Print Joystick Readings;

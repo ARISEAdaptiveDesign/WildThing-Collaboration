@@ -17,7 +17,10 @@ const int numSamples_Tether = 30; // number of samples to check in a "window"
 const int numWindows_Tether = 30; // maximum attempts to check joystick
 const float TetherDownrate = 1.0; // downrate of thether input for scaling speed (0 to 1)
 
-const float motorDropout = 0.01; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor.
+// Straight Ahead Trim Factors
+const float trimFactor = 0.0; // Calibration to compensate if one motor stronger than the other. Typical 0, with range between +/-10% where positive value will strengthen left motor and weaken the right one
+
+float motorDropout = 0.05; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor. "Too high" will cause troubles when turning because the inside motor "will not shut off smoothly"
 
   // Angles
   const float spinZone      = 15; // number of degrees above or below East or West that one motor turning and other is stopped
@@ -46,6 +49,6 @@ const float motorDropout = 0.01; // typical range: 0.01 to 0.15 ;motor dropout (
   const int maxBrake = 400 ; // per loop ramp rate to turn on braking for vnh5019. max braking is 400
 
 // rescales the potentiometer output to get a speed multiplier
-  float potValueRescale[4] = {540, 950, .35, .85};  //speedMultiplier = rescale(potValue, 540, 950, .35, .85);
+  float potValueRescale[4] = {30, 990, .35, .85};  //speedMultiplier = rescale(potValue, 540, 950, .35, .85);
 
 #endif

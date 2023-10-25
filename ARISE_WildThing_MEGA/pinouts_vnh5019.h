@@ -8,8 +8,13 @@
 
 // INPUTS //
   // Joystick Inputs
-    const int joyX_Occupant = A7; // Horizontal Joystick input <Occupant>
-    const int joyY_Occupant = A8; // Vertical Joystick input <Occupant>
+    // SPECIAL PINOUTS FOR THIS CODE
+      const int GoRequest_Onboard = A7; // switch operated by occupant to enable movement when JoySwitch_Main = occupant
+      const int GoRequest_Tether = A8; // parallel switch operated by Parent/Guardian to enable movement when JoySwitch_Main = occupant
+      // Special Code always uses Tether Joystick (wired to A12 and A14 inputs)
+      const int joyX_Occupant = A12; // Horizontal Joystick input <Occupant>
+      const int joyY_Occupant = A14; // Vertical Joystick input <Occupant>
+
     const int JoySwitch_Onboard = A9; // OFF disables Onboard Joystick
     const int joyX_Tether = A12; // Horizontal Joystick input <Tethered>
     const int joyY_Tether = A14; // Vertical Joystick input <Tethered>

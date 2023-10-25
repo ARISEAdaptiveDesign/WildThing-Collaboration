@@ -3,6 +3,27 @@
   ARISE - Syracuse, NY
   Main Contact: Connor McGough
   Coders: Bill Smith 2021/11/10
+
+  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+  <<<< NOTE: THIS IS SPECIAL CODE FOR FOLLOWING SPECIAL USE CASE >>>>
+  Occupant Joystick inputs are wired to 2 switches
+        (green wire was wired to occupant X direction is now switched to Joystick + voltage at PARENT joystick)
+        (blue wire was wired to occupant Y direction is now switched to Joystick + voltage at Occupant)
+  Always use Tether, but
+    IF Joyswitch_Main = occupant mode THEN
+      Use tether joystick but Only move if button is pushed (either Onboard or Tether button)
+       (likewise, STOP if neither button is ON)
+
+  This is accomplished by using Tether Joystick inputs for both Tether and Occupant modes
+  which allows Autocentering to still work normally when switching JoySwitch_Main between Onboard/Tether modes
+  and also keeps OccupantDownrate and TetherDownrate functioning normally 
+
+  Occupant and Tether Switches were wired into existing Occupant inputs A7 & A8 to avoid rewiring special arduino shields/connectors
+  If either switch is depressed in occupant mode then set joyRadius = 0
+
+  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 */
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +129,14 @@ void loop()
 
       // convert cartesian deltaX and deltaY of joystick into polar coordinates joyAngle & joyRadius
       getPolarCoordinates();
+
+      // >>> SPECIAL CODE: If either switch is depressed in occupant mode then set joyRadius = 0 >>>
+      if ( !usingTether ) {
+        if ( analogRead(GoRequest_Onboard) > 512 || analogRead(GoRequest_Tether) > 512) {
+          joyRadius = 0;
+        }
+      }
+      // <<< END SPECIAL CODE <<<<
     }
 
 

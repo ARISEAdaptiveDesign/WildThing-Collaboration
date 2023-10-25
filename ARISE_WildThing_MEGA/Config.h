@@ -8,7 +8,7 @@ const float joyOffsetAngle_Occupant = 0; // polar orientation of joystick (offse
 const bool flipSpin_Occupant = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <OCCUPANT>
 const int numSamples_Occupant = 30; // number of samples to check in a "window"
 const int numWindows_Occupant = 30; // maximum attempts to check joystick
-const float OccupantDownrate = 0.5; // downrate of occupant input for scaling speed (0 to 1)
+const float OccupantDownrate = 1.0; // downrate of occupant input for scaling speed (0 to 1)
 
 // Tethered Joystick
 const float joyOffsetAngle_Tether = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <TETHER>

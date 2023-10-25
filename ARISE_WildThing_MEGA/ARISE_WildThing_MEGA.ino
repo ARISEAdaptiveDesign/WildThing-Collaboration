@@ -13,14 +13,14 @@
   Always use Tether, but
     IF Joyswitch_Main = occupant mode THEN
       Use tether joystick but Only move if button is pushed (either Onboard or Tether button)
-       (likewise, STOP if neither button is ON)
+       (likewise, if neither button is ON then STOP)
 
   This is accomplished by using Tether Joystick inputs for both Tether and Occupant modes
   which allows Autocentering to still work normally when switching JoySwitch_Main between Onboard/Tether modes
   and also keeps OccupantDownrate and TetherDownrate functioning normally 
 
   Occupant and Tether Switches were wired into existing Occupant inputs A7 & A8 to avoid rewiring special arduino shields/connectors
-  If either switch is depressed in occupant mode then set joyRadius = 0
+  If neither switch is depressed in occupant mode then set joyRadius = 0
 
   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -130,13 +130,16 @@ void loop()
       // convert cartesian deltaX and deltaY of joystick into polar coordinates joyAngle & joyRadius
       getPolarCoordinates();
 
-      // >>> SPECIAL CODE: If either switch is depressed in occupant mode then set joyRadius = 0 >>>
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      // SPECIAL CODE: If neither switch is depressed in occupant mode then set joyRadius = 0
       if ( !usingTether ) {
-        if ( analogRead(GoRequest_Onboard) > 512 || analogRead(GoRequest_Tether) > 512) {
+        if ( analogRead(GoRequest_Onboard) < 512 && analogRead(GoRequest_Tether) < 512) {
           joyRadius = 0;
+          //else use regular joystick radius
         }
       }
       // <<< END SPECIAL CODE <<<<
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
 

@@ -37,14 +37,5 @@ void getPolarCoordinates() {
       }
     // swap spin direction if required
     if (flipSpin) { joyAngle = map(joyAngle,0,360,360,0); } // reverse direction if flipSpin = true
-  }
-
-/*
-    Serial.print("deltaX = "); Serial.print(deltaX); Serial.print("\t");
-    Serial.print("deltaY = "); Serial.print(deltaY); Serial.print("\t");
-    Serial.print("joyAngle = "); Serial.print(joyAngle); Serial.print("\t");
-    Serial.print("joyRadius = "); Serial.print(joyRadius); Serial.print("\t");
-    Serial.println("");
-*/
-  
+  }  
 }

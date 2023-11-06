@@ -1,15 +1,8 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// << selectJoystick >>
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 void selectJoystick() {
-  
   ///////////////////////////////////////////////////////////////
   // check whether we need to use the occupant or tether joystick
   // Autocenter if it changes
   ///////////////////////////////////////////////////////////////
-  //if (analogRead(JoySwitch_Main) < 1022 && digitalRead(JoySwitch_Tether) == HIGH)
-  //Serial.print("JoySwitch_Main = "); Serial.print(analogRead(JoySwitch_Main)); Serial.print("\t");
   if (analogRead(JoySwitch_Main) > 800 )
   {
     //  Serial.print("Selected tether ");
@@ -34,7 +27,7 @@ void selectJoystick() {
   }
   else
   {
-     // Serial.print("Selected Onboard ");
+    // Serial.print("Selected Onboard ");
     // We use the occupant joystick
     if (usingTether || !joyInit)
     {

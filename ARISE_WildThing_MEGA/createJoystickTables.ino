@@ -27,12 +27,6 @@ void createJoystickTables() {
       { 360              , motorForward_PowerLevels }
   };
   memcpy(mixTableL, mixTableLTemp, sizeof(mixTableLTemp));
-  Serial.print("mixTableL= ");   Serial.println("");
-    for(int i = 0; i < 15; i++)
-    {
-      Serial.print(i); Serial.print("  "); Serial.print(mixTableL[i][0]); Serial.print("  "); Serial.print(mixTableL[i][1]); Serial.println("");
-    }
-  Serial.println("");
     
   // Generate LookupTables for R Mix  
   float mixTableRTemp[15][2] = {
@@ -54,12 +48,6 @@ void createJoystickTables() {
     
   };
   memcpy(mixTableR, mixTableRTemp, sizeof(mixTableRTemp));
-  Serial.print("mixTableR= ");   Serial.println("");
-    for(int i = 0; i < 15; i++)
-    {
-      Serial.print(i); Serial.print("  "); Serial.print(mixTableR[i][0]); Serial.print("  "); Serial.print(mixTableR[i][1]); Serial.println("");
-    }
-  Serial.println("");
 
 // Radius Lookup Table (Scale)
 

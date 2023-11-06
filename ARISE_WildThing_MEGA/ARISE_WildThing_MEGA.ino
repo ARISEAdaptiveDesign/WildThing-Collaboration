@@ -2,89 +2,31 @@
 /*
   ARISE - Syracuse, NY
   Main Contact: Connor McGough
-  Coders: Bill Smith 2021/11/10
+  Coders: Bill Smith 2023/11/05
 */
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// << CALIBRATIONS >> //
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // #include "pinouts.h"; // use for SPARK, 298N, Amazon
   #include "pinouts_vnh5019.h"; // Use for VNH5019 MotorShield
   #include "Config.h";
   #include "Init.h";
   #include "DualVNH5019MotorShield.h";
-
   DualVNH5019MotorShield md;
 
 void setup()
 {
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-  // << initialize serial communications >>
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-    Serial.begin(9600); // set communication between computer & Arduino; and Arduino to HC-50 Remote
+  Serial.begin(9600); // set communication between computer & Arduino
+  md.init(); // initialize VNH5019
+  pinMode(JoySwitch_Main,INPUT);
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-  // << DEFINE OUTPUTS/INPUTS >>
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-    switch (motorDriverType) {
-      case 1: case 2:
-        // set all the motor control pins to outputs
-          pinMode(pwm1, OUTPUT);
-          pinMode(pwm2, OUTPUT);
-          pinMode(dir1, OUTPUT);
-          pinMode(dir1_opp, OUTPUT);
-          pinMode(dir2, OUTPUT);
-          pinMode(dir2_opp, OUTPUT);
-          //digitalWrite(HC05_GND, LOW); // sets digital pin to LOW to function as GND
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        // << SET MOTORS OFF >>
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-          delay(50); // wait a little before turning on Motor Controllers
-          pinMode(PowerLevelSupply, OUTPUT); // define digital pin as output
-          digitalWrite(PowerLevelSupply, HIGH); // sets digital pin to HIGH to function as 5V
-          pinMode(powerSpark1, OUTPUT); // define digital pin as output
-          digitalWrite(powerSpark1, HIGH); // sets digital pin to HIGH to function as 5V
-          pinMode(powerSpark2, OUTPUT); // define digital pin as output
-          digitalWrite(powerSpark2, HIGH); // sets digital pin to HIGH to function as 5V
-
-          // Start with motors disabled and direction forward
-          // Motor 1
-          analogWrite(pwm1, 0 );
-          digitalWrite(dir1, HIGH);
-          digitalWrite(dir1_opp, LOW);
-
-          // Motor 2
-          analogWrite(pwm2, 0 );
-          digitalWrite(dir2, HIGH);
-          digitalWrite(dir2_opp, LOW);
-      break;
-      case 3:
-        // initialize VNH5019
-          md.init();
-      break;
-      }
-        pinMode(JoySwitch_Main,INPUT);
-
-      // LEDs
-        pinMode(statusLED,OUTPUT);
-        analogWrite(statusLED, 255); // Turn ON GREEN STATUS LED
-
-      // Generate mix tables for Left & Right mix based on joystick angle and scale based on radius
-        createJoystickTables();
+  // Generate mix tables for Left & Right mix based on joystick angle and scale based on radius
+    createJoystickTables();
 }
-
 
 void loop()
 {
   selectJoystick(); // Check if we use occupant or tether joystick & Interrupt to Autocenter if it changes
 
   if (joyPassed == true) {
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-  // << Calculate Joystick Polar Coordinates (Angle and Radius) from Cartesian Coordinates (X & Y) >>
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-
+  readPot(); // Read speed potentiometer and calc speedMultiplier
   // << Read the Joystick X and Y positions >>
   joyPosX = analogRead(joyX);
   joyPosY = analogRead(joyY);
@@ -92,28 +34,17 @@ void loop()
   // Check for broken wires or bad connection. Stop motors if bad <ELSE> Calc Desired Motor Velocities if good
   if ( joyPosX < joyFaultBand || joyPosX > 1023-joyFaultBand || joyPosY < joyFaultBand || joyPosY > 1023-joyFaultBand) {
       // If we got here, we probably have a bad connection in the Joystick Circuit so stop (ramp down motors) and throw error
-      Serial.println("");
-      Serial.print("ERROR: Joystick out of Range. Check Joystick Pin and Connector Connections.");
-      Serial.println("");
+      Serial.println(""); Serial.print("ERROR: Joystick out of Range. Check Joystick Pin and Connector Connections."); Serial.println("");
       // Need to set motor speeds to 0 (motorLVel_Filt & motorRVel_Filt will let rate limiter take care of decel rate limits)
-      //motorLVel = 0;
-      //motorRVel = 0;
       joyAngle = 0;
       joyRadius = 0;
-
     } else {
       // Joystick wires seem OK, so go ahead...
       deltaX = joyPosX - xRest; // A2D cartesian position from "at Rest"
       deltaY = joyPosY - yRest; // A2D cartesian position from "at Rest"
-
-      // convert cartesian deltaX and deltaY of joystick into polar coordinates joyAngle & joyRadius
-      getPolarCoordinates();
+      getPolarCoordinates(); // convert cartesian deltaX and deltaY of joystick into polar coordinates joyAngle & joyRadius
     }
 
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-  // << CALC DESIRED MOTOR VELOCITY >>
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
     // figure out scale from radius
     for (int i = 0; i < 5; i+=1) {
       x1 = radTable[i][0];
@@ -133,7 +64,6 @@ void loop()
       y1 = mixTableL[i][1];
       x2 = mixTableL[i+1][0];
       y2 = mixTableL[i+1][1];
-
       if ( joyAngle<=x2 ) {
         if (x2==x1) {Lmix = y1;} else {  Lmix = y1 + (joyAngle - x1) * (y2 - y1) / (x2 - x1);}
         break; // jump out of loop when find value in lookup table
@@ -152,154 +82,38 @@ void loop()
       }
     }
 
-    // Read potentiometer output and get the speed multiplier from there
-    readPot();
-    motorLVel = min( 1, max( Lmix * scale * speedMultiplier * (1 + trimFactor), -1)); // motorLVel = Lmix (from joystick angle) x scale (from joytsick radius) x speedMultiplier (from speedPot) & saturated -1 to 1
-    motorRVel = min( 1, max( Rmix * scale * speedMultiplier * (1 - trimFactor), -1)); // motorRVel = Rmix (from joystick angle) x scale (from joytsick radius) x speedMultiplier (from speedPot) & saturated -1 to 1
+    // Set desired motor velocity as product of Mix (joystick angle), Scale (joystick radius), speedMultiplier (Speed Pot) and trimFactor (left vs right motor strength)
+    motorLVel = min( 1, max( Lmix * scale * speedMultiplier * (1 + trimFactor), -1)); // limited between +/-1
+    motorRVel = min( 1, max( Rmix * scale * speedMultiplier * (1 - trimFactor), -1)); // limited between +/-1
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    // << FILTER MOTOR VELOCITY & SET DIRECTIONS >>
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-      // set LEFT motor directions (Note: dir1_opp and dir2_opp not used for SPARK but needed to keep code consistent)
-      if (motorLForward) {
-        // we are in Forward direction
-        motorLVel_next = motorLVel_Filt + min( maxAccel, max( -maxDecel, motorLVel - motorLVel_Filt ) ); // Rate Limit on Positive direction
-        if (motorLVel_next > 0 || zeroCrossingCountL >= zeroCrossingDwell) {
-          motorLVel_Filt = motorLVel_next ; // if both xxx_Filt and xxx__next same sign, then no dwell
-          zeroCrossingCountL = 0 ;
-        } else {
-          motorLVel_Filt = 0 ;
-          zeroCrossingCountL++ ;
-        }
-      } else {
-        // we are in Reverse direction
-        motorLVel_next = motorLVel_Filt + max( -maxAccel, min( maxDecel, motorLVel - motorLVel_Filt ) );  // Rate Limit on Negative direction
-        if (motorLVel_next < 0 || zeroCrossingCountL >= zeroCrossingDwell) {
-          motorLVel_Filt = motorLVel_next ; // if both xxx_Filt and xxx__next same sign, then no dwell
-          zeroCrossingCountL = 0 ;
-        } else {
-          motorLVel_Filt = 0 ;
-          zeroCrossingCountL++ ;
-        }
-      }
-
-      // keep track of motor direction (Note velocity of 0 does not change direction)
-      if (motorLVel_Filt > 0) {
-        motorLForward = true; // last direction is forward (motorLForward initialized as true)
-        digitalWrite(dir1, HIGH);
-        digitalWrite(dir1_opp, LOW);
-      }
-      if (motorLVel_Filt < 0) {
-        motorLForward = false;  // last direction is reverse
-        digitalWrite(dir1, LOW);
-        digitalWrite(dir1_opp, HIGH);
-      }
-
-      // set RIGHT motor directions (Note: dir1_opp and dir2_opp not used for SPARK but needed to keep code consistent)
-      if (motorRForward) {
-        motorRVel_next = motorRVel_Filt + min( maxAccel, max( -maxDecel, motorRVel - motorRVel_Filt ) ); // Rate Limit on Positive direction
-        if (motorRVel_next > 0 || zeroCrossingCountR >= zeroCrossingDwell) {
-          motorRVel_Filt = motorRVel_next ; // if both xxx_Filt and xxx__next same sign, then no dwell
-          zeroCrossingCountR = 0 ;
-        } else {
-          motorRVel_Filt = 0 ;
-          zeroCrossingCountR++ ;
-        }
-      } else {
-        // we are in Reverse direction
-        motorRVel_next = motorRVel_Filt + max( -maxAccel, min( maxDecel, motorRVel - motorRVel_Filt ) );  // Rate Limit on Negative direction
-        if (motorRVel_next < 0 || zeroCrossingCountR >= zeroCrossingDwell) {
-          motorRVel_Filt = motorRVel_next ; // if both xxx_Filt and xxx__next same sign, then no dwell
-          zeroCrossingCountR = 0 ;
-        } else {
-          motorRVel_Filt = 0 ;
-          zeroCrossingCountR++ ;
-        }
-      }
-
-      // keep track of motor direction (Note velocity of 0 does not change direction)
-      if (motorRVel_Filt > 0) {
-        motorRForward = true; // last direction is forward (motorLForward initialized as true)
-        digitalWrite(dir2, HIGH);
-        digitalWrite(dir2_opp, LOW);
-      }
-      if (motorRVel_Filt < 0) {
-        motorRForward = false;  // last direction is reverse
-        digitalWrite(dir2, LOW);
-        digitalWrite(dir2_opp, HIGH);
-      }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    // << SCALE and OUTPUT MOTOR SIGNALS >>
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
     // need to make sure that when turning on we start at motor min value
-      if( motorLVel_Filt > 0 ) {
-        motorLVel_Final = rescale(motorLVel_Filt, 0, 1, motorDropout, 1);
-      } else if ( motorLVel_Filt < 0 ) {
-        motorLVel_Final = rescale(motorLVel_Filt, -1, 0, -1, -motorDropout);
+    // Dropout is put here instead of in scale lookup table because motor dropout cannot be modified by LMix, speedMultiplier, etc
+      if( motorLVel > 0 ) {
+        motorLVel_Dropout = rescale(motorLVel, 0, 1, motorDropout, 1);
+      } else if ( motorLVel < 0 ) {
+        motorLVel_Dropout = rescale(motorLVel, -1, 0, -1, -motorDropout);
       } else {
-        motorLVel_Final = 0;
+        motorLVel_Dropout = 0;
       }
-      if( motorRVel_Filt > 0 ) {
-        motorRVel_Final = rescale(motorRVel_Filt, 0, 1, motorDropout, 1);
-      } else if ( motorRVel_Filt < 0 ) {
-        motorRVel_Final = rescale(motorRVel_Filt, -1, 0, -1, -motorDropout);
+      if( motorRVel > 0 ) {
+        motorRVel_Dropout = rescale(motorRVel, 0, 1, motorDropout, 1);
+      } else if ( motorRVel < 0 ) {
+        motorRVel_Dropout = rescale(motorRVel, -1, 0, -1, -motorDropout);
       } else {
-        motorRVel_Final = 0;
+        motorRVel_Dropout = 0;
       }
 
-    switch (motorDriverType) {
-      case 1:
-          // scale motor speeds based on whether the car is in reverse
-          // SPARK is special //
-              // https://www.revrobotics.com/content/docs/REV-11-1200-QS.pdf
-              //                                Pulse Width (µs)
-              //                       Full Reverse     Prop. Reverse       Neutral         Prop. Forward  Full Forward
-              // Factory Default Range   p ≤ 1000      1000 < p < 1440   1440 ≤ p ≤ 1440   1500 < p < 2000   2000 ≤ p
-          // Therefore SPARK driver conversion (when using MEGA w/ 490Hz PWM Frequency) is 124 A2D = full reverse, 188 A2D = stopped, 252 A2D = full forward
-            motorLSpeed = rescale(motorLVel_Final, -1, 1, 124, 252); // pwm output 124 A2D = full reverse, 252 A2D = full forward
-            motorRSpeed = rescale(motorRVel_Final, -1, 1, 124, 252); // pwm output 124 A2D = full reverse, 252 A2D = full forward
-          // OUTPUT motor speeds
-            analogWrite(pwm1, motorLSpeed );
-            analogWrite(pwm2, motorRSpeed );
-      break;
-      case 2:
-          // AMAZON or 298N
-            motorLSpeed = rescale(abs(motorLVel_Filt), 0, 1, 0, motorMaxSpeed);
-            motorRSpeed = rescale(abs(motorRVel_Filt), 0, 1, 0, motorMaxSpeed);
-          // OUTPUT motor speeds
-            analogWrite(pwm1, motorLSpeed );
-            analogWrite(pwm2, motorRSpeed );
-      break;
-      case 3:
-        if (motorLVel_Final==0){
-          BrakeL = min(BrakeL+BrakeRamp,maxBrake); //increment brake at defined rate to avoid skids ;), Limit at maxBrake
-          md.setM1Brake(BrakeL); // set brake pwm
-        } else {
-          BrakeL = 0; //reset brake level if driving motor
-          motorLSpeed = rescale(motorLVel_Final, -1, 1, -400, 400);
-          md.setM1Speed(motorLSpeed);
-        }
-        if (motorRVel_Final==0){
-          BrakeR = min(BrakeR+BrakeRamp,maxBrake); //increment brake at defined rate to avoid skids ;), limit at maxBrake
-          md.setM2Brake(BrakeR); // set brake pwm
-        } else {
-          BrakeR = 0; //reset brake level if driving motor
-          motorRSpeed = rescale(motorRVel_Final, -1, 1, -400, 400);
-          md.setM2Speed(motorRSpeed);
-        }
-        //stopIfFault();
-      break;
-    }
+    // Rate Limit Motor Velocity & Delay in case of zero crossing
+    rateLimitMotors(); // rate limit motors and handle zerocrossing
+
+    // OUTPUT MOTOR SIGNALS
+    setMotorOutputs_VNH5019(motorLVel_Filt, motorRVel_Filt);
 
     // Print info to Serial screen
     debug();
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-  // << CONTROL LOOP SPEED with Delay >>
-  ///////////////////////////////////////////////////////////////////////////////////////////////////
-    delay(10); // wait x milliseconds before the next loop:
-
+    
+    // wait x milliseconds before the next loop
+    delay(10);
   
   } else {
     // If Joystick Fails, You end up here.

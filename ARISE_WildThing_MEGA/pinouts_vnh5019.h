@@ -49,15 +49,8 @@
   // OUTPUTS //
   // Motor 1 (LEFT)
     int pwm1 = 5; //enA for L298N
-    int dir1 = 4; //in1  for L298N
-    int dir1_opp = 3; //in2 (opposite of dir1) for L298N
   // Motor 2 (RIGHT)
     int pwm2 = 7; //enB for L298N
-    int dir2 = 6; //in3 for L298N
-    int dir2_opp = 2; //in4 (opposite of dir2) for L298N
-  // SPARK Controllers
-    #define powerSpark1 52 // define digital pin 52 as extra +5V pin to power SPARK1
-    #define powerSpark2 53 // define digital pin 53 as extra +5V pin to power SPARK2
   // Extra Power Pin
     #define PowerLevelSupply 8 // define digital pin 8 as extra +5V pin to power the potentiometer
     

@@ -32,11 +32,6 @@ void debug(){
 //    Serial.print("LV_Filt = "); Serial.print(motorLVel_Filt); Serial.print("\t");
 //    Serial.print("RV_Filt = "); Serial.print(motorRVel_Filt); Serial.print("\t");
 
-//    Serial.print("motorLVel_Final = "); Serial.print(motorLVel_Final); Serial.print("\t");
-//    Serial.print("motorRVel_Final = "); Serial.print(motorRVel_Final); Serial.print("\t");
-//    Serial.print("LV_Final = "); Serial.print(motorLVel_Final); Serial.print("\t");
-//    Serial.print("RV_Final = "); Serial.print(motorRVel_Final); Serial.print("\t");
-
 //    Serial.print("motorLSpeed = "); Serial.print(motorLSpeed); Serial.print("\t");
 //    Serial.print("motorRSpeed = "); Serial.print(motorRSpeed); Serial.print("\t");
 //    Serial.print("LSp = "); Serial.print(motorLSpeed); Serial.print("\t");

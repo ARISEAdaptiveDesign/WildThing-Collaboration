@@ -34,8 +34,8 @@
   // Motor Speed Values - Start at zero
     float  motorLVel = 0;
     float  motorRVel = 0;
-    float  motorLVel_Dropout = 0;
-    float  motorRVel_Dropout = 0;
+    float  motorLVel_plusDropout = 0;
+    float  motorRVel_plusDropout = 0;
     float  motorLVel_Filt = 0;
     float  motorRVel_Filt = 0;
     int  motorLSpeed = 0;

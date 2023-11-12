@@ -6,6 +6,7 @@
 */
 
   #include "pinouts_vnh5019.h"; // Use for VNH5019 MotorShield
+  #include "Debounce.h"
   #include "Config.h";
   #include "Init.h";
   #include "DualVNH5019MotorShield.h";
@@ -89,18 +90,18 @@ void loop()
     // need to make sure that when turning on we start at motor min value
     // Dropout is put here instead of in scale lookup table because motor dropout cannot be modified by LMix, speedMultiplier, etc
       if( motorLVel > 0 ) {
-        motorLVel_Dropout = rescale(motorLVel, 0, 1, motorDropout, 1);
+        motorLVel_plusDropout = rescale(motorLVel, 0, 1, motorDropout, 1);
       } else if ( motorLVel < 0 ) {
-        motorLVel_Dropout = rescale(motorLVel, -1, 0, -1, -motorDropout);
+        motorLVel_plusDropout = rescale(motorLVel, -1, 0, -1, -motorDropout);
       } else {
-        motorLVel_Dropout = 0;
+        motorLVel_plusDropout = 0;
       }
       if( motorRVel > 0 ) {
-        motorRVel_Dropout = rescale(motorRVel, 0, 1, motorDropout, 1);
+        motorRVel_plusDropout = rescale(motorRVel, 0, 1, motorDropout, 1);
       } else if ( motorRVel < 0 ) {
-        motorRVel_Dropout = rescale(motorRVel, -1, 0, -1, -motorDropout);
+        motorRVel_plusDropout = rescale(motorRVel, -1, 0, -1, -motorDropout);
       } else {
-        motorRVel_Dropout = 0;
+        motorRVel_plusDropout = 0;
       }
 
     // Rate Limit Motor Velocity & Delay in case of zero crossing

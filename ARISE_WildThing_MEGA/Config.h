@@ -47,6 +47,9 @@ const float trimFactor = 0.0; // Calibration to compensate if one motor stronger
   const int BrakeRamp = 10 ; // per loop ramp rate to turn on braking for vnh5019.
   const int maxBrake = 400 ; // per loop ramp rate to turn on braking for vnh5019. max braking is 400
 
+  Debounce zeroCrossDebL(zeroCrossingDwell); // define Debounce class to allocate memory for zero crossing motor direction (ref Debounce.cpp)
+  Debounce zeroCrossDebR(zeroCrossingDwell); // define Debounce class to allocate memory for zero crossing motor direction (ref Debounce.cpp)
+
 // rescales the potentiometer output to get a speed multiplier
   float potValueRescale[4] = {30, 990, .35, .85};  //speedMultiplier = rescale(potValue, 540, 950, .35, .85);
 

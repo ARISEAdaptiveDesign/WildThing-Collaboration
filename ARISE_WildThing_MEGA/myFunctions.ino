@@ -1,45 +1,5 @@
 // reusable custom functions
 
-int debounceHigh(int thisInput, unsigned long debounceTime) {
-  static int lastOutput = LOW;
-  static int thisOutput = LOW;
-  static unsigned long lastDebounceTime = 0;
-
-  if (thisInput != lastOutput) {
-    lastDebounceTime = millis();
-  }
-
-  if ((millis() - lastDebounceTime) > debounceTime) {
-    if (thisInput != thisOutput) {
-      thisOutput = thisInput;
-      lastOutput = thisInput;
-      return thisOutput == HIGH;
-    }
-  }
-
-  return false;
-}
-
-int debounceLow(int thisInput, unsigned long debounceTime) {
-  static int lastOutput = HIGH;
-  static int thisOutput = HIGH;
-  static unsigned long lastDebounceTime = 0;
-
-  if (thisInput != lastOutput) {
-    lastDebounceTime = millis();
-  }
-
-  if ((millis() - lastDebounceTime) > debounceTime) {
-    if (thisInput != thisOutput) {
-      thisOutput = thisInput;
-      lastOutput = thisInput;
-      return thisOutput == LOW;
-    }
-  }
-
-  return false;
-}
-
 void readPot() {
   // reads potentiometer output and rescales
   double potValue = analogRead(PowerLevelPotInput);

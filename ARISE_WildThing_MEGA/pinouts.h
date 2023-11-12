@@ -1,6 +1,6 @@
 
-#ifndef pinouts_vnh5019_H
-#define pinouts_vnh5019_H
+#ifndef pinouts_H
+#define pinouts_H
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // << ARDUINO PINOUTS (Only Modify When Wiring Diagram Changes) >>
@@ -20,11 +20,7 @@
     const int vnh_M1CS = A0; // Left Motor Current Sense
     const int vnh_M2CS = A1; // Right Motor Current Sense
 
-  // Battery level input
-    //const int batteryLevelAnalog = A3;
-
   // POWER LEVEL POTENTIOMETER
-    //#define PowerLevelSupply 8 // define digital pin 8 as extra +5V pin to power the potentiometer
     const int PowerLevelPotInput = A15; // Input pin for potentiometer
 
 // OUTPUTS //
@@ -40,18 +36,4 @@
       const int vnh_M2INB = 8; //RIGHT Motor B Polarity (M2INB)
       const int vnh_enableDiag2 = 12;// RIGHT Motor EN/DIAG (M2EN/DIAG)
 
-  // LEDs
-      const int statusLED = 5;  // GREEN Status LED near Big Red Button
-    //const int ledPins[] = {9, 10, 11, 12};
-    //const int LEDArrayLength = sizeof(ledPins)/sizeof(ledPins[0]);
-
-  // We need to define these just to keep code similar, even though they are not used on this config
-  // OUTPUTS //
-  // Motor 1 (LEFT)
-    int pwm1 = 5; //enA for L298N
-  // Motor 2 (RIGHT)
-    int pwm2 = 7; //enB for L298N
-  // Extra Power Pin
-    #define PowerLevelSupply 8 // define digital pin 8 as extra +5V pin to power the potentiometer
-    
 #endif

@@ -36,12 +36,15 @@ void loop() {
       deltaY = joyPosY - yRest; // calc A2D cartesian position from "at Rest"
       getPolarCoordinates(); // convert cartesian deltaX and deltaY of joystick into polar coordinates joyAngle & joyRadius
     }
-  
+
     // Convert Polar Coordinates to Desired Speed & Mix using 2D Joystick Table Lookups 
-      scale = interpolate(joyRadius, radTable); // calc scale from joyRadius
+      int numRows = sizeof(radTable)/sizeof(radTable[0]);
+      scale = interpolate(joyRadius, radTable, numRows); // calc scale from joyRadius
       if (usingTether) {scale = scale*TetherDownrate;} else { scale = scale*OccupantDownrate;} // modify scale per customer desired speeds on tether vs onboard joysticks
-      Lmix = interpolate(joyAngle, mixTableL); // calc Lmix from joyAngle
-      Rmix = interpolate(joyAngle, mixTableR); // calc Rmix from joyAngle
+      numRows = sizeof(mixTableL)/sizeof(mixTableL[0]);
+      Lmix = interpolate(joyAngle, mixTableL, numRows); // calc Lmix from joyAngle
+      numRows = sizeof(mixTableR)/sizeof(mixTableR[0]);
+      Rmix = interpolate(joyAngle, mixTableR, numRows); // calc Rmix from joyAngle
       
     // Calc desired motor velocity as product of Mix (joystick angle), Scale (joystick radius), speedMultiplier (Speed Pot) and trimFactor (left vs right motor strength)
       motorLVel = min( 1, max( Lmix * scale * speedMultiplier * (1 + trimFactor), -1)); // limited between +/-1

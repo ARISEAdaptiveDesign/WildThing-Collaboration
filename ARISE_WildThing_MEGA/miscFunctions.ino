@@ -7,31 +7,34 @@ void getInputs() {
     joyPosY = analogRead(joyY);
 }
 
-float interpolate(float x, const float table[][2]) {
+float interpolate(float x, const float table[][2], int numRows) {
   // Function to perform linear interpolation on a 2D lookup table
-  // Calculate the size of the array
-  int size = sizeof(table) / sizeof(table[0]);
 
   // Check if x is outside the range of the table
   if (x <= table[0][0]) {
     return table[0][1];
-  } else if (x >= table[size - 1][0]) {
-    return table[size - 1][1];
+  } else if (x >= table[numRows - 1][0]) {
+    return table[numRows - 1][1];
   }
 
   // Find the index of the two nearest x values in the table
-  int i = 0;
-  while (x > table[i + 1][0]) {
-    i++;
+  for (int i = 0; i < numRows; i+=1) {
+    // Perform linear interpolation
+    float x1 = table[i][0];
+    float x2 = table[i + 1][0];
+    float y1 = table[i][1];
+    float y2 = table[i + 1][1];
+    if ( x<=x2 ) { 
+      if (x2==x1) {// protect divByZero
+        return y1;
+      } else {
+        return y1 + (x - x1) * (y2 - y1) / (x2 - x1);
+      }
+    }
   }
-
-  // Perform linear interpolation
-  float x0 = table[i][0];
-  float x1 = table[i + 1][0];
-  float y0 = table[i][1];
-  float y1 = table[i + 1][1];
-
-  return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+  // next i
+  
+  return table[numRows - 1][1]; // if not found return last y
 }
 
 void rateLimitMotors() {

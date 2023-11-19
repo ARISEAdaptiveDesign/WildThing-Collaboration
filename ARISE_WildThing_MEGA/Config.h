@@ -35,7 +35,7 @@ const float trimFactor = 0.0; // Calibration to compensate if one motor stronger
 
 // Radius Lookup Table (Scale)
   const float Deadband   = .1 ; // 0 to .1 (%) suggested around rest position before moving (NOTE this will be used in + and - directions, so actual deadband is 2x)
-  const float motorDropout = 0.08; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor. "Too high" will cause troubles when turning because the inside motor "will not shut off smoothly"
+  const float motorDropout = 0.12; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor. "Too high" will cause troubles when turning because the inside motor "will not shut off smoothly"
   const float Endband    = .01 ; // 0 to .1 (%) suggested at end of range to ignore
   const float SlowRadius = 0.4 ; // 0 to 1 (%) of the Joystick range to use for low speed control (x-axis end of 1st ramp & begin 2nd ramp in lookup table)
   const float SlowPower  = 0.2 ; // 0 to 1 (%) of Power to use for low speed control (y-axis end of 1st ramp & begin 2nd ramp in lookup table)

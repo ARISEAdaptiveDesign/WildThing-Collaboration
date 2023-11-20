@@ -84,6 +84,6 @@ void loop() {
     // Print info to Serial screen
       debug();
     // wait x milliseconds before the next loop
-      delay(10);
+    //  delay(10);
   }
 }

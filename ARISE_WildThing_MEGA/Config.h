@@ -8,7 +8,7 @@ const float joyOffsetAngle_Occupant = 0; // polar orientation of joystick (offse
 const bool flipSpin_Occupant = false; // use true or false to change SPIN direction (flip if chair left/right is wrong) <OCCUPANT>
 const int numSamples_Occupant = 30; // number of samples to check in a "window"
 const int numWindows_Occupant = 30; // maximum attempts to check joystick
-const float OccupantDownrate = 0.85; // downrate of occupant input for scaling speed (0 to 1)
+const float OccupantDownrate = 0.30; // downrate of occupant input for scaling speed (0 to 1)
 
 // Tethered Joystick
 const float joyOffsetAngle_Tether = 0; // polar orientation of joystick (offset # of degrees to get forward to equal 0) <TETHER>
@@ -35,13 +35,13 @@ const float trimFactor = 0.0; // Calibration to compensate if one motor stronger
 
 // Radius Lookup Table (Scale)
   const float Deadband   = .1 ; // 0 to .1 (%) suggested around rest position before moving (NOTE this will be used in + and - directions, so actual deadband is 2x)
-  const float motorDropout = 0.12; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor. "Too high" will cause troubles when turning because the inside motor "will not shut off smoothly"
+  const float motorDropout = 0.08; // typical range: 0.01 to 0.15 ;motor dropout ( % of motorMaxSpeed ) Set this to the minimum % it takes to drive the motor. "Too high" will cause troubles when turning because the inside motor "will not shut off smoothly"
   const float Endband    = .01 ; // 0 to .1 (%) suggested at end of range to ignore
   const float SlowRadius = 0.4 ; // 0 to 1 (%) of the Joystick range to use for low speed control (x-axis end of 1st ramp & begin 2nd ramp in lookup table)
   const float SlowPower  = 0.2 ; // 0 to 1 (%) of Power to use for low speed control (y-axis end of 1st ramp & begin 2nd ramp in lookup table)
 
 // Acceleration & Deceleration Limits
-  const float maxAccel = 0.05 ; // range: 0.01 to 1 max acceleration of motor per timestep
+  const float maxAccel = 0.04 ; // range: 0.01 to 1 max acceleration of motor per timestep
   const float maxDecel = 0.08 ; // range: 0.01 to 1 max deceleration of motor per timestep
   const float zeroCrossingDwell = 100 ; // time (ms) to keep motor off between changes in direction
   const int BrakeRamp = 10 ; // per loop ramp rate to turn on braking for vnh5019.

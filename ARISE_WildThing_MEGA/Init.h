@@ -2,16 +2,6 @@
 #ifndef Init_H
 #define Init_H
 
-  // MOTOR DRIVERs
-  // Spark = SPARK DC Brush Motor Driver
-  //         (doesn't use dir for direction, uses midrange pwm as OFF, lower pwm as negative, and higher pwm as positive direction)
-  // Maxmartt = Maxmartt Dual Motor Driver Module Board (aka. Amazon Driver)
-  //            H-Bridge Driver Chip DC IRF3205
-  //            MOSFET 3-36V 10A Peak 30A
-  //            (uses dir for direction)
-  // L298N = L298N (uses dir and dir_opp for direction)
-  int motorDriverType = 3; // 1 = SPARK; 2 = Maxmartt or L298N; 3 = VNH5019
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // << OTHER GLOBAL INITIALIZATIONS (Do Not Modify) >>
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,14 +34,12 @@
   // Motor Speed Values - Start at zero
     float  motorLVel = 0;
     float  motorRVel = 0;
+    float  motorLVel_plusDropout = 0;
+    float  motorRVel_plusDropout = 0;
     float  motorLVel_Filt = 0;
     float  motorRVel_Filt = 0;
-    float  motorLVel_Final = 0;
-    float  motorRVel_Final = 0;
     int  motorLSpeed = 0;
     int  motorRSpeed = 0;
-    int  motorLSpeed_Filt = 0;
-    int  motorRSpeed_Filt = 0;
     double speedMultiplier = 0;
 
     float motorMaxL = 1;
@@ -74,20 +62,14 @@
   // zero crossing variables
     bool motorLForward = true;
     float motorLVel_next = 0;
-    int zeroCrossingCountL = 0;
     bool motorRForward = true;
     float motorRVel_next = 0;
-    int zeroCrossingCountR = 0; //counter how long we are at zero
     int BrakeL = 0 ; // LEFT motor Value to brake for vnh5019, braking is value 0 min and 400 max
     int BrakeR = 0 ; // RIGHT motor Value to brake for vnh5019, braking is value 0 min and 400 max
 
   // keeps track of whether we need to set up the joystick or tether in the loop
     bool usingTether = false;
     
-  // POWER SETTINGS //
-    //int switchLevel; // Default power level set by the measured switch value. Determines how fast the motors can move; 0 is slowest, 1 is medium (default), 2 is fastest
-    //int powerLevel = 1; // Default power level set by the measured switch value or BT. Determines how fast the motors can move; 0 is slowest, 1 is medium (default), 2 is fastest
-
   // Mix Lookup Tables (converting joystick angle to Left & Right Mix) (3 power settings x 7 points)
     float mixTableL[15][2]; // Lookuptable to convert joystick angle to Left motor Mix
     float mixTableR[15][2]; // Lookuptable to convert joystick angle to Right motor Mix
